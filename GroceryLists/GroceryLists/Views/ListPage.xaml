@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:GroceryLists.ViewModels"
+             x:Class="GroceryLists.Views.ListPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Item" Order="Primary" Priority="0" Command="{Binding AddItem}"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <vm:ListViewModel></vm:ListViewModel>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Padding="20">
+            <Label Text="{Binding ListName}"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   VerticalOptions="StartAndExpand" 
+                   HorizontalOptions="StartAndExpand"/>
+            <Label x:Name="noRecentsAvailableLabel"
+                   Text="No Recent Matches Available"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="StartAndExpand"
+                   Padding="40"
+                   IsVisible="False"/>
+            <ListView x:Name="listPageList" 
+                      BackgroundColor="GhostWhite" 
+                      SeparatorColor="Black"
+                      VerticalOptions="FillAndExpand"
+                      HorizontalOptions="FillAndExpand"
+                      HasUnevenRows="True"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding Refresh}"
+                      IsRefreshing="{Binding IsRefreshing}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <!--TODO : move to Command instead of Clicked-->
+                                <MenuItem CommandParameter="{Binding .}"
+                                        Clicked="Delete_Clicked"
+                                        Text="Delete" 
+                                        IsDestructive="True" /> 
+                            </ViewCell.ContextActions>
+                            <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand" Padding="10">
+                                <Label Text="{Binding Name}" 
+                                           FontSize="Medium"
+                                           FontAttributes="Bold"
+                                           TextColor="Black"/>
+                                <FlexLayout Direction="Row" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Label Text="Created By: " 
+                                           FontSize="Medium"
+                                           TextColor="Black"/>
+                                    <Label Text="{Binding CreatedBy}" 
+                                           FontSize="Medium"
+                                           TextColor="Gray"/>
+                                </FlexLayout>
+                                <FlexLayout Direction="Row" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Timestamp}" 
+                                           FontSize="Medium"
+                                           TextColor="Gray"/>
+                                </FlexLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,16 +1,21 @@
 ﻿using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using GroceryLists.ViewModels;
+using GroceryLists.Views; 
 
 namespace GroceryLists
 {
     public partial class App : Application
     {
+        public static MainPage MainPg { get; set; } = null;
+        public static MainViewModel MainVM { get; set; } = null;
+        public static ListPage ListPg { get; set; } = null;
+        public static ListViewModel ListVM { get; set; } = null;
+
         public App()
         {
             InitializeComponent();
-
-            MainPage = new MainPage();
+            MainPage =  new NavigationPage(new MainPage()); ;
         }
 
         protected override void OnStart()

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:GroceryLists.ViewModels"
+             x:Class="GroceryLists.MainPage"
+             x:Name="Main">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Order="Primary" Priority="0" Command="{Binding Refresh}"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Padding="20">
+            <Label Text="Active Lists"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   VerticalOptions="StartAndExpand" 
+                   HorizontalOptions="StartAndExpand"/>
+            <ListView x:Name="mainPageList" 
+                      BackgroundColor="GhostWhite" 
+                      SeparatorColor="Black"
+                      VerticalOptions="FillAndExpand"
+                      HorizontalOptions="FillAndExpand"
+                      HasUnevenRows="True"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding Refresh}"
+                      IsRefreshing="{Binding IsRefreshing}"
+                      ItemSelected="mainPageList_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <!--TODO : move to Command instead of Clicked-->
+                                <MenuItem CommandParameter="{Binding .}"
+                                        Clicked="Delete_Clicked"
+                                        Text="Delete" 
+                                        IsDestructive="True" /> 
+                            </ViewCell.ContextActions>
+                            <StackLayout HorizontalOptions="StartAndExpand" 
+                                         VerticalOptions="FillAndExpand" 
+                                         Padding="10" 
+                                         BackgroundColor="AliceBlue">
+                                <Label Text="{Binding Name}" 
+                                           FontSize="Medium"
+                                           FontAttributes="Bold"
+                                           TextColor="Black"/>
+                                <FlexLayout Direction="Row" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Timestamp}" 
+                                           FontSize="Medium"
+                                           TextColor="Gray"/>
+                                </FlexLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Add List" 
+                    Command="{Binding AddList}" 
+                    BackgroundColor="SkyBlue"
+                    Padding="10"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
